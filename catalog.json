@@ -1,0 +1,29 @@
+{
+  "games": [
+    {
+      "id": "anime_race",
+      "name": "سباق الأنمي",
+      "nameEn": "Anime Race",
+      "version": "1.0.0",
+      "download": "",
+      "exe": "AnimeRace.exe",
+      "image": "",
+      "commands": [
+        { "id": "spawn_naruto", "label": "نزّل ناروتو", "labelEn": "Spawn Naruto" },
+        { "id": "spawn_luffy", "label": "نزّل لوفي", "labelEn": "Spawn Luffy" },
+        { "id": "spawn_goku", "label": "نزّل جوكو", "labelEn": "Spawn Goku" },
+        { "id": "spawn_tanjiro", "label": "نزّل تانجيرو", "labelEn": "Spawn Tanjiro" },
+        { "id": "spawn_gojo", "label": "نزّل جوجو", "labelEn": "Spawn Gojo" },
+        { "id": "spawn_zoro", "label": "نزّل زورو", "labelEn": "Spawn Zoro" }
+      ],
+      "mappings": [
+        { "number": 1, "command": "spawn_naruto" },
+        { "number": 2, "command": "spawn_luffy" },
+        { "number": 3, "command": "spawn_goku" },
+        { "number": 4, "command": "spawn_tanjiro" },
+        { "number": 5, "command": "spawn_gojo" },
+        { "number": 6, "command": "spawn_zoro" }
+      ]
+    }
+  ]
+}
