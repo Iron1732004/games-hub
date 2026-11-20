@@ -5,24 +5,174 @@
       "name": "سباق الأنمي",
       "nameEn": "Anime Race",
       "version": "1.0.0",
-      "download": "",
-      "exe": "AnimeRace.exe",
-      "image": "",
+      "download": "https://github.com/Iron1732004/iron-games/releases/download/anime-race-1.0.0/AnimeRace_IRON.exe",
+      "exe": "AnimeRace_IRON.exe",
+      "image": "https://raw.githubusercontent.com/Iron1732004/games-hub/main/images/anime_race.png",
+      "description": "المشاهدين بينزّلوا شخصياتهم في السباق بالأرقام، وبيقلبوا السباق بالهدايا.",
+      "descriptionEn": "Viewers drop their characters into the race with numbers and turn it around with gifts.",
+      "protocol": "udp",
+      "port": 9080,
       "commands": [
-        { "id": "spawn_naruto", "label": "نزّل ناروتو", "labelEn": "Spawn Naruto" },
-        { "id": "spawn_luffy", "label": "نزّل لوفي", "labelEn": "Spawn Luffy" },
-        { "id": "spawn_goku", "label": "نزّل جوكو", "labelEn": "Spawn Goku" },
-        { "id": "spawn_tanjiro", "label": "نزّل تانجيرو", "labelEn": "Spawn Tanjiro" },
-        { "id": "spawn_gojo", "label": "نزّل جوجو", "labelEn": "Spawn Gojo" },
-        { "id": "spawn_zoro", "label": "نزّل زورو", "labelEn": "Spawn Zoro" }
+        {
+          "id": "spawn_naruto",
+          "label": "نزّل ناروتو",
+          "labelEn": "Spawn Naruto",
+          "send": {
+            "cmd": 1
+          }
+        },
+        {
+          "id": "spawn_luffy",
+          "label": "نزّل لوفي",
+          "labelEn": "Spawn Luffy",
+          "send": {
+            "cmd": 2
+          }
+        },
+        {
+          "id": "spawn_goku",
+          "label": "نزّل جوكو",
+          "labelEn": "Spawn Goku",
+          "send": {
+            "cmd": 3
+          }
+        },
+        {
+          "id": "spawn_tanjiro",
+          "label": "نزّل تانجيرو",
+          "labelEn": "Spawn Tanjiro",
+          "send": {
+            "cmd": 4
+          }
+        },
+        {
+          "id": "spawn_gojo",
+          "label": "نزّل جوجو",
+          "labelEn": "Spawn Gojo",
+          "send": {
+            "cmd": 5
+          }
+        },
+        {
+          "id": "spawn_zoro",
+          "label": "نزّل زورو",
+          "labelEn": "Spawn Zoro",
+          "send": {
+            "cmd": 6
+          }
+        },
+        {
+          "id": "fast",
+          "label": "جري سريع",
+          "labelEn": "Fast run",
+          "send": {
+            "effect": "fast"
+          }
+        },
+        {
+          "id": "super",
+          "label": "سرعة خارقة",
+          "labelEn": "Super speed",
+          "send": {
+            "effect": "super"
+          }
+        },
+        {
+          "id": "storm",
+          "label": "العاصفة",
+          "labelEn": "Storm",
+          "send": {
+            "effect": "storm"
+          }
+        },
+        {
+          "id": "signature",
+          "label": "الحركة الخاصة",
+          "labelEn": "Signature move",
+          "send": {
+            "effect": "signature"
+          }
+        },
+        {
+          "id": "phoenix",
+          "label": "العنقاء",
+          "labelEn": "Phoenix",
+          "send": {
+            "effect": "phoenix"
+          }
+        },
+        {
+          "id": "dragon",
+          "label": "التنين",
+          "labelEn": "Dragon",
+          "send": {
+            "effect": "dragon"
+          }
+        }
       ],
       "mappings": [
-        { "number": 1, "command": "spawn_naruto" },
-        { "number": 2, "command": "spawn_luffy" },
-        { "number": 3, "command": "spawn_goku" },
-        { "number": 4, "command": "spawn_tanjiro" },
-        { "number": 5, "command": "spawn_gojo" },
-        { "number": 6, "command": "spawn_zoro" }
+        {
+          "number": 1,
+          "command": "spawn_naruto"
+        },
+        {
+          "number": 2,
+          "command": "spawn_luffy"
+        },
+        {
+          "number": 3,
+          "command": "spawn_goku"
+        },
+        {
+          "number": 4,
+          "command": "spawn_tanjiro"
+        },
+        {
+          "number": 5,
+          "command": "spawn_gojo"
+        },
+        {
+          "number": 6,
+          "command": "spawn_zoro"
+        }
+      ],
+      "gifts": [
+        {
+          "gift": "Rose",
+          "label": "وردة",
+          "labelEn": "Rose",
+          "command": "fast"
+        },
+        {
+          "gift": "Finger Heart",
+          "label": "قلب بالصوابع",
+          "labelEn": "Finger Heart",
+          "command": "super"
+        },
+        {
+          "gift": "Doughnut",
+          "label": "دونات",
+          "labelEn": "Doughnut",
+          "command": "storm"
+        },
+        {
+          "gift": "Hand Hearts",
+          "label": "قلوب بالإيد",
+          "labelEn": "Hand Hearts",
+          "command": "signature"
+        },
+        {
+          "gift": "Galaxy",
+          "label": "المجرة",
+          "labelEn": "Galaxy",
+          "command": "phoenix"
+        },
+        {
+          "gift": "Lion",
+          "label": "الأسد",
+          "labelEn": "Lion",
+          "command": "dragon"
+        }
       ]
     }
   ]
