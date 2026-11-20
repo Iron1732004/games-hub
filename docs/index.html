@@ -132,7 +132,7 @@ tr.click:hover td { background: rgba(255,255,255,.03); }
 
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 import { getFirestore, collection, getDocs, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
 const firebaseConfig = {
@@ -172,8 +172,11 @@ let installs = [], sessions = [], userFilter = 'all', median = 0;
 $('#signin').onclick = async () => {
   $('#gateErr').classList.add('hidden');
   try { await signInWithPopup(auth, new GoogleAuthProvider()); }
-  catch (e) { $('#gateErr').textContent = 'مقدرتش أسجل الدخول: ' + (e.code || e.message); $('#gateErr').classList.remove('hidden'); }
+  catch (e) {
+    // browsers that block the popup get the full-page sign-in instead
+    if (e.code === 'auth/popup-blocked' || e.code === 'auth/operation-not-supported-in-this-environment') return signInWithRedirect(auth, new GoogleAuthProvider()); $('#gateErr').textContent = 'مقدرتش أسجل الدخول: ' + (e.code || e.message); $('#gateErr').classList.remove('hidden'); }
 };
+getRedirectResult(auth).catch(() => {});
 $('#signout').onclick = () => signOut(auth);
 $('#refresh').onclick = () => load();
 $('#dClose').onclick = () => $('#detail').classList.add('hidden');
