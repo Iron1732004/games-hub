@@ -291,7 +291,7 @@ function renderUsers() {
     .sort((a, b) => (isLive(b) - isLive(a)) || (ts(b.lastSeen) - ts(a.lastSeen)));
   $('#cUsers').textContent = list.length;
   $('#tUsers').innerHTML = list.length ? list.map((i) => `<tr class="click" data-uid="${esc(i.uid)}">
-    <td class="user"><span class="dot ${isLive(i) ? 'on' : ''}"></span>${name(esc(i.tiktokUser))}</td>
+    <td class="user"><span class="dot ${isLive(i) ? 'on' : ''}"></span>${name(esc(i.tiktokUser))}${i.accountEmail ? `<div class="muted" style="font-size:12px;font-weight:600">${esc(i.accountName || '')} · ${esc(i.accountEmail)}</div>` : ''}</td>
     <td>${isLive(i) ? '<span class="tag good">لايف</span>' : isOnline(i) ? '<span class="tag mid">فاتح البرنامج</span>' : '<span class="tag gray">مش لايف</span>'}</td>
     <td>${i.linked ? '<span class="tag good">مربوط</span>' : '<span class="tag low">مش مربوط</span>'}</td>
     <td class="num">${fmt(count[i.uid])}</td><td class="num">${count[i.uid] ? fmt(Math.round(avg[i.uid] / count[i.uid])) : '—'}</td>
