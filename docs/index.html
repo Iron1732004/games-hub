@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>VOLT — لوحة التحكم</title>
+<link rel="icon" href="icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+:root { --bg: #0a0b0e; --panel: #14161b; --panel2: #1b1e25; --line: rgba(255,255,255,.08); --text: #eef0f4; --muted: #8b93a1;
+  --ember: #ff8a1f; --ember2: #ffc35a; --green: #22c55e; --red: #ef4444; --yellow: #eab308; }
+* { box-sizing: border-box; }
+body { margin: 0; background: radial-gradient(1200px 600px at 80% -10%, rgba(255,120,20,.12), transparent 60%), var(--bg); color: var(--text); font-family: Cairo, sans-serif; min-height: 100vh; }
+.hidden { display: none !important; }
+header { display: flex; align-items: center; gap: 14px; padding: 18px 28px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: rgba(10,11,14,.85); backdrop-filter: blur(10px); z-index: 5; }
+header img { width: 44px; height: 44px; }
+header h1 { margin: 0; font-size: 24px; font-weight: 900; }
+header .sub { color: var(--muted); font-size: 13px; }
+header .grow { flex: 1; }
+.btn { font: inherit; font-weight: 700; border-radius: 12px; border: 1px solid var(--line); background: var(--panel2); color: var(--text); padding: 9px 16px; cursor: pointer; }
+.btn.primary { background: linear-gradient(180deg, #ffb347, #ff7a12); color: #1a0d00; border: 0; }
+main { max-width: 1280px; margin: 0 auto; padding: 24px 28px 60px; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-bottom: 26px; }
+.kpi { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 16px 18px; }
+.kpi .l { color: var(--muted); font-size: 13px; font-weight: 700; }
+.kpi .v { font-size: 34px; font-weight: 900; line-height: 1.3; }
+.kpi .v.live { color: var(--green); }
+h2 { font-size: 19px; font-weight: 900; margin: 30px 0 12px; display: flex; align-items: center; gap: 10px; }
+h2 .count { font-size: 13px; color: var(--muted); background: var(--panel2); padding: 2px 10px; border-radius: 999px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { text-align: start; color: var(--muted); font-weight: 700; font-size: 12.5px; padding: 11px 14px; background: var(--panel2); white-space: nowrap; }
+td { padding: 11px 14px; border-top: 1px solid var(--line); white-space: nowrap; }
+tr.click { cursor: pointer; }
+tr.click:hover td { background: rgba(255,255,255,.03); }
+.user { font-weight: 800; direction: ltr; unicode-bidi: isolate; }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #4b5563; margin-inline-end: 7px; }
+.dot.on { background: var(--green); box-shadow: 0 0 10px var(--green); animation: pulse 1.6s infinite; }
+@keyframes pulse { 50% { opacity: .45; } }
+.tag { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 800; }
+.tag.good { background: rgba(34,197,94,.15); color: #4ade80; }
+.tag.mid { background: rgba(234,179,8,.15); color: #facc15; }
+.tag.low { background: rgba(239,68,68,.15); color: #f87171; }
+.tag.gray { background: rgba(255,255,255,.07); color: var(--muted); }
+.num { font-variant-numeric: tabular-nums; direction: ltr; unicode-bidi: isolate; }
+.muted { color: var(--muted); }
+.empty { padding: 26px; text-align: center; color: var(--muted); }
+.tabs { display: flex; gap: 8px; margin: 6px 0 4px; flex-wrap: wrap; }
+.tabs .btn.on { border-color: var(--ember); color: var(--ember2); }
+.gate { max-width: 440px; margin: 12vh auto; text-align: center; background: var(--panel); border: 1px solid var(--line); border-radius: 24px; padding: 36px 30px; }
+.gate img { width: 96px; }
+.gate h1 { font-size: 26px; margin: 10px 0 4px; }
+.gate p { color: var(--muted); margin: 0 0 22px; }
+.err { color: #f87171; margin-top: 14px; font-weight: 700; }
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,.6); display: grid; place-items: center; z-index: 20; padding: 20px; }
+.modal .box { background: var(--panel); border: 1px solid var(--line); border-radius: 22px; width: min(900px, 100%); max-height: 88vh; overflow: auto; padding: 22px; }
+.modal h3 { margin: 0 0 4px; font-size: 22px; }
+.chart { width: 100%; height: 220px; margin: 12px 0 18px; }
+.legend { display: flex; gap: 16px; font-size: 12.5px; color: var(--muted); }
+.legend i { display: inline-block; width: 12px; height: 3px; border-radius: 2px; margin-inline-end: 6px; vertical-align: middle; }
+@media (max-width: 760px) { main { padding: 16px; } .tablewrap { overflow-x: auto; } }
+.tablewrap { overflow-x: auto; }
+</style>
+</head>
+<body>
+<div id="gate" class="gate">
+  <img src="icon.png" alt="" />
+  <h1>لوحة تحكم VOLT</h1>
+  <p>الصفحة دي لصاحب البرنامج بس.</p>
+  <button id="signin" class="btn primary">تسجيل الدخول بجوجل</button>
+  <div id="gateErr" class="err hidden"></div>
+</div>
+
+<div id="app" class="hidden">
+  <header>
+    <img src="icon.png" alt="" />
+    <div><h1>VOLT</h1><div class="sub">لوحة التحكم · <span id="updated"></span></div></div>
+    <div class="grow"></div>
+    <button id="refresh" class="btn">تحديث</button>
+    <button id="signout" class="btn">خروج</button>
+  </header>
+  <main>
+    <div class="kpis">
+      <div class="kpi"><div class="l">لايف دلوقتي</div><div class="v live num" id="kLive">0</div></div>
+      <div class="kpi"><div class="l">مشاهدين لايف دلوقتي</div><div class="v num" id="kViewers">0</div></div>
+      <div class="kpi"><div class="l">كل اللي سطّبوا البرنامج</div><div class="v num" id="kInstalls">0</div></div>
+      <div class="kpi"><div class="l">ربطوا يوزر نيم</div><div class="v num" id="kLinked">0</div></div>
+      <div class="kpi"><div class="l">فاتحين البرنامج دلوقتي</div><div class="v num" id="kOnline">0</div></div>
+      <div class="kpi"><div class="l">لايفات آخر 7 أيام</div><div class="v num" id="kWeek">0</div></div>
+    </div>
+
+    <h2>لايف دلوقتي <span class="count" id="cLive">0</span></h2>
+    <div class="card tablewrap"><table>
+      <thead><tr><th>الستريمر</th><th>اللعبة</th><th>بقاله</th><th>مشاهدين دلوقتي</th><th>أعلى مشاهدين</th><th>لايكات</th><th>كومنتات</th></tr></thead>
+      <tbody id="tLive"></tbody></table></div>
+
+    <h2>المستخدمين <span class="count" id="cUsers">0</span></h2>
+    <div class="tabs" id="userTabs">
+      <button class="btn on" data-f="all">الكل</button>
+      <button class="btn" data-f="linked">ربطوا يوزر</button>
+      <button class="btn" data-f="unlinked">مربطوش</button>
+      <button class="btn" data-f="live">لايف دلوقتي</button>
+      <button class="btn" data-f="off">مش لايف</button>
+    </div>
+    <div class="card tablewrap"><table>
+      <thead><tr><th>الستريمر</th><th>الحالة</th><th>اليوزر</th><th>عدد اللايفات</th><th>متوسط المشاهدين</th><th>آخر لايف</th><th>آخر ظهور</th><th>نسخة البرنامج</th></tr></thead>
+      <tbody id="tUsers"></tbody></table></div>
+
+    <h2>ترتيب الستريمرز بالريتش</h2>
+    <div class="card tablewrap"><table>
+      <thead><tr><th>#</th><th>الستريمر</th><th>لايفات</th><th>متوسط المشاهدين</th><th>أعلى مشاهدين</th><th>تفاعل لكل مشاهد</th><th>الريتش</th></tr></thead>
+      <tbody id="tRank"></tbody></table></div>
+
+    <h2>كل اللايفات <span class="count" id="cSessions">0</span></h2>
+    <div class="card tablewrap"><table>
+      <thead><tr><th>الستريمر</th><th>اللعبة</th><th>البداية</th><th>المدة</th><th>متوسط مشاهدين</th><th>أعلى مشاهدين</th><th>لايكات</th><th>كومنتات</th><th>شير</th><th>فولو</th><th>الريتش</th></tr></thead>
+      <tbody id="tSessions"></tbody></table></div>
+  </main>
+</div>
+
+<div id="detail" class="modal hidden"><div class="box">
+  <div style="display:flex;align-items:center;gap:10px"><h3 id="dTitle" class="user"></h3><div class="grow" style="flex:1"></div><button class="btn" id="dClose">قفل</button></div>
+  <div class="muted" id="dSub"></div>
+  <svg id="dChart" class="chart"></svg>
+  <div class="legend"><span><i style="background:#ff8a1f"></i>متوسط المشاهدين</span><span><i style="background:#60a5fa"></i>أعلى مشاهدين</span></div>
+  <div class="tablewrap" style="margin-top:12px"><table>
+    <thead><tr><th>البداية</th><th>اللعبة</th><th>المدة</th><th>متوسط</th><th>أعلى</th><th>لايكات</th><th>كومنتات</th><th>شير</th><th>فولو</th><th>الريتش</th></tr></thead>
+    <tbody id="dRows"></tbody></table></div>
+</div></div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import { getFirestore, collection, getDocs, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB0g-ENYWyBHY-x3RAjZX3qHE30KpOkY_s",
+  authDomain: "volt-hub-b3e62.firebaseapp.com",
+  projectId: "volt-hub-b3e62",
+  storageBucket: "volt-hub-b3e62.firebasestorage.app",
+  messagingSenderId: "603121835880",
+  appId: "1:603121835880:web:55110b1a0e3b480d8bc0dd"
+};
+const GAMES = { anime_race: 'سباق الأنمي' };
+const ONLINE_MS = 3 * 60 * 1000;
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmt = (n) => Number(n || 0).toLocaleString('en-US');
+const ts = (v) => (v && v.toDate ? v.toDate() : v ? new Date(v) : null);
+const ago = (d) => {
+  if (!d) return '—';
+  const m = Math.round((Date.now() - d) / 60000);
+  if (m < 1) return 'دلوقتي';
+  if (m < 60) return `من ${m} دقيقة`;
+  const h = Math.round(m / 60);
+  if (h < 24) return `من ${h} ساعة`;
+  return `من ${Math.round(h / 24)} يوم`;
+};
+const dur = (min) => (min >= 60 ? `${Math.floor(min / 60)}س ${min % 60}د` : `${min || 0}د`);
+const when = (d) => (d ? d.toLocaleString('ar-EG', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }) : '—');
+const game = (id) => GAMES[id] || id || '—';
+const name = (u) => (u ? '@' + u : '<span class="muted">مربطش يوزر</span>');
+
+let installs = [], sessions = [], userFilter = 'all', median = 0;
+
+$('#signin').onclick = async () => {
+  $('#gateErr').classList.add('hidden');
+  try { await signInWithPopup(auth, new GoogleAuthProvider()); }
+  catch (e) { $('#gateErr').textContent = 'مقدرتش أسجل الدخول: ' + (e.code || e.message); $('#gateErr').classList.remove('hidden'); }
+};
+$('#signout').onclick = () => signOut(auth);
+$('#refresh').onclick = () => load();
+$('#dClose').onclick = () => $('#detail').classList.add('hidden');
+$('#detail').onclick = (e) => { if (e.target.id === 'detail') $('#detail').classList.add('hidden'); };
+document.querySelectorAll('#userTabs .btn').forEach((b) => (b.onclick = () => {
+  userFilter = b.dataset.f;
+  document.querySelectorAll('#userTabs .btn').forEach((x) => x.classList.toggle('on', x === b));
+  renderUsers();
+}));
+
+let timer = null;
+onAuthStateChanged(auth, (u) => {
+  clearInterval(timer);
+  if (!u) { $('#app').classList.add('hidden'); $('#gate').classList.remove('hidden'); return; }
+  load().then((ok) => {
+    if (!ok) return;
+    $('#gate').classList.add('hidden');
+    $('#app').classList.remove('hidden');
+    timer = setInterval(load, 60000);
+  });
+});
+
+async function load() {
+  try {
+    const [a, b] = await Promise.all([
+      getDocs(collection(db, 'installs')),
+      getDocs(query(collection(db, 'sessions'), orderBy('startedAt', 'desc'), limit(1000))),
+    ]);
+    installs = a.docs.map((d) => ({ id: d.id, ...d.data() }));
+    sessions = b.docs.map((d) => ({ id: d.id, ...d.data() }));
+  } catch (e) {
+    await signOut(auth);
+    $('#gateErr').textContent = e.code === 'permission-denied' ? 'الحساب ده مش مسموح له يفتح اللوحة.' : 'حصلت مشكلة: ' + (e.code || e.message);
+    $('#gateErr').classList.remove('hidden');
+    return false;
+  }
+  render();
+  return true;
+}
+
+const isOnline = (i) => ts(i.lastSeen) && Date.now() - ts(i.lastSeen) < ONLINE_MS;
+const isLive = (i) => i.live && isOnline(i);
+const engagement = (s) => (Number(s.likes || 0) / 20 + Number(s.comments || 0) + Number(s.shares || 0) * 3 + Number(s.follows || 0) * 5);
+function reach(avg) {
+  if (!sessions.length || !median) return '<span class="tag gray">—</span>';
+  if (avg >= median * 1.5) return '<span class="tag good">ريتش قوي</span>';
+  if (avg >= median * 0.7) return '<span class="tag mid">متوسط</span>';
+  return '<span class="tag low">ضعيف</span>';
+}
+
+function render() {
+  const avgs = sessions.map((s) => Number(s.avgViewers || 0)).filter((x) => x > 0).sort((x, y) => x - y);
+  median = avgs.length ? avgs[Math.floor(avgs.length / 2)] : 0;
+  const live = installs.filter(isLive);
+  $('#updated').textContent = 'آخر تحديث ' + new Date().toLocaleTimeString('ar-EG', { hour: 'numeric', minute: '2-digit' });
+  $('#kLive').textContent = fmt(live.length);
+  $('#kViewers').textContent = fmt(live.reduce((n, i) => n + Number(i.viewers || 0), 0));
+  $('#kInstalls').textContent = fmt(installs.length);
+  $('#kLinked').textContent = fmt(installs.filter((i) => i.linked).length);
+  $('#kOnline').textContent = fmt(installs.filter(isOnline).length);
+  $('#kWeek').textContent = fmt(sessions.filter((s) => ts(s.startedAt) > Date.now() - 7 * 864e5).length);
+
+  // live now
+  $('#cLive').textContent = live.length;
+  $('#tLive').innerHTML = live.length ? live.map((i) => {
+    const s = sessions.find((x) => x.uid === i.uid && !x.endedAt) || {};
+    return `<tr class="click" data-uid="${esc(i.uid)}"><td class="user"><span class="dot on"></span>${name(esc(i.tiktokUser))}</td><td>${esc(game(i.game))}</td>
+      <td>${ago(ts(i.liveSince)).replace('من ', '')}</td><td class="num">${fmt(i.viewers)}</td><td class="num">${fmt(s.peakViewers)}</td>
+      <td class="num">${fmt(s.likes)}</td><td class="num">${fmt(s.comments)}</td></tr>`;
+  }).join('') : '<tr><td colspan="7" class="empty">مفيش حد لايف دلوقتي</td></tr>';
+
+  renderUsers();
+
+  // ranking
+  const by = {};
+  for (const s of sessions) {
+    const k = s.uid;
+    const r = (by[k] ||= { uid: k, user: s.tiktokUser, n: 0, avgSum: 0, peak: 0, eng: 0 });
+    r.n += 1; r.avgSum += Number(s.avgViewers || 0); r.peak = Math.max(r.peak, Number(s.peakViewers || 0));
+    r.eng += engagement(s) / Math.max(1, Number(s.avgViewers || 0));
+    if (s.tiktokUser) r.user = s.tiktokUser;
+  }
+  const rank = Object.values(by).map((r) => ({ ...r, avg: Math.round(r.avgSum / r.n), engPer: r.eng / r.n })).sort((a, b) => b.avg - a.avg || b.peak - a.peak);
+  $('#tRank').innerHTML = rank.length ? rank.map((r, i) => `<tr class="click" data-uid="${esc(r.uid)}"><td class="num">${i + 1}</td><td class="user">${name(esc(r.user))}</td>
+    <td class="num">${fmt(r.n)}</td><td class="num">${fmt(r.avg)}</td><td class="num">${fmt(r.peak)}</td><td class="num">${r.engPer.toFixed(1)}</td><td>${reach(r.avg)}</td></tr>`).join('')
+    : '<tr><td colspan="7" class="empty">لسه مفيش لايفات</td></tr>';
+
+  // sessions
+  $('#cSessions').textContent = sessions.length;
+  $('#tSessions').innerHTML = sessions.length ? sessions.slice(0, 300).map(sessionRow(true)).join('') : '<tr><td colspan="11" class="empty">لسه مفيش لايفات</td></tr>';
+
+  document.querySelectorAll('tr.click').forEach((tr) => (tr.onclick = () => openUser(tr.dataset.uid)));
+}
+
+const sessionRow = (withUser) => (s) => `<tr class="click" data-uid="${esc(s.uid)}">
+  ${withUser ? `<td class="user">${s.endedAt ? '' : '<span class="dot on"></span>'}${name(esc(s.tiktokUser))}</td>` : ''}
+  ${withUser ? `<td>${esc(game(s.game))}</td><td>${when(ts(s.startedAt))}</td>` : `<td>${when(ts(s.startedAt))}</td><td>${esc(game(s.game))}</td>`}
+  <td>${dur(Number(s.minutes || 0))}</td><td class="num">${fmt(s.avgViewers)}</td><td class="num">${fmt(s.peakViewers)}</td>
+  <td class="num">${fmt(s.likes)}</td><td class="num">${fmt(s.comments)}</td><td class="num">${fmt(s.shares)}</td><td class="num">${fmt(s.follows)}</td>
+  <td>${reach(Number(s.avgViewers || 0))}</td></tr>`;
+
+function renderUsers() {
+  const count = {}, avg = {}, last = {};
+  for (const s of sessions) {
+    count[s.uid] = (count[s.uid] || 0) + 1;
+    avg[s.uid] = (avg[s.uid] || 0) + Number(s.avgViewers || 0);
+    const d = ts(s.startedAt);
+    if (!last[s.uid] || d > last[s.uid]) last[s.uid] = d;
+  }
+  const list = installs.filter((i) => userFilter === 'all' || (userFilter === 'linked' && i.linked) || (userFilter === 'unlinked' && !i.linked)
+    || (userFilter === 'live' && isLive(i)) || (userFilter === 'off' && !isLive(i)))
+    .sort((a, b) => (isLive(b) - isLive(a)) || (ts(b.lastSeen) - ts(a.lastSeen)));
+  $('#cUsers').textContent = list.length;
+  $('#tUsers').innerHTML = list.length ? list.map((i) => `<tr class="click" data-uid="${esc(i.uid)}">
+    <td class="user"><span class="dot ${isLive(i) ? 'on' : ''}"></span>${name(esc(i.tiktokUser))}</td>
+    <td>${isLive(i) ? '<span class="tag good">لايف</span>' : isOnline(i) ? '<span class="tag mid">فاتح البرنامج</span>' : '<span class="tag gray">مش لايف</span>'}</td>
+    <td>${i.linked ? '<span class="tag good">مربوط</span>' : '<span class="tag low">مش مربوط</span>'}</td>
+    <td class="num">${fmt(count[i.uid])}</td><td class="num">${count[i.uid] ? fmt(Math.round(avg[i.uid] / count[i.uid])) : '—'}</td>
+    <td>${ago(last[i.uid])}</td><td>${ago(ts(i.lastSeen))}</td><td class="num">${esc(i.version || '')}</td></tr>`).join('')
+    : '<tr><td colspan="8" class="empty">مفيش حد هنا</td></tr>';
+  document.querySelectorAll('#tUsers tr.click').forEach((tr) => (tr.onclick = () => openUser(tr.dataset.uid)));
+}
+
+function openUser(uid) {
+  const i = installs.find((x) => x.uid === uid) || {};
+  const list = sessions.filter((s) => s.uid === uid);
+  $('#dTitle').innerHTML = name(esc(i.tiktokUser || (list[0] || {}).tiktokUser));
+  $('#dSub').textContent = `${list.length} لايف · آخر ظهور ${ago(ts(i.lastSeen))}`;
+  $('#dRows').innerHTML = list.length ? list.map(sessionRow(false)).join('') : '<tr><td colspan="10" class="empty">لسه معملش لايف بالبرنامج</td></tr>';
+  drawChart(list.slice().reverse());
+  $('#detail').classList.remove('hidden');
+}
+
+function drawChart(list) {
+  const svg = $('#dChart');
+  const W = svg.clientWidth || 800, H = 220, P = 30;
+  if (!list.length) { svg.innerHTML = ''; return; }
+  const max = Math.max(1, ...list.map((s) => Number(s.peakViewers || 0)));
+  const x = (k) => (list.length === 1 ? W / 2 : P + (k * (W - 2 * P)) / (list.length - 1));
+  const y = (v) => H - P - (v / max) * (H - 2 * P);
+  const line = (f, color) => `<polyline fill="none" stroke="${color}" stroke-width="2.5" stroke-linejoin="round" points="${list.map((s, k) => `${x(k)},${y(f(s))}`).join(' ')}"/>`
+    + list.map((s, k) => `<circle cx="${x(k)}" cy="${y(f(s))}" r="3.5" fill="${color}"><title>${when(ts(s.startedAt))}: ${fmt(f(s))}</title></circle>`).join('');
+  const grid = [0, 0.5, 1].map((t) => `<line x1="${P}" x2="${W - P}" y1="${y(max * t)}" y2="${y(max * t)}" stroke="rgba(255,255,255,.07)"/><text x="${W - P + 4}" y="${y(max * t) + 4}" fill="#8b93a1" font-size="11">${fmt(Math.round(max * t))}</text>`).join('');
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.innerHTML = grid + line((s) => Number(s.peakViewers || 0), '#60a5fa') + line((s) => Number(s.avgViewers || 0), '#ff8a1f');
+}
+</script>
+</body>
+</html>
