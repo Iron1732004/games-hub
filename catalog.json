@@ -4,8 +4,8 @@
       "id": "anime_race",
       "name": "سباق الأنمي",
       "nameEn": "Anime Race",
-      "version": "1.0.2",
-      "download": "https://github.com/Iron1732004/iron-games/releases/download/anime-race-1.0.2/AnimeRace_IRON.exe",
+      "version": "1.0.3",
+      "download": "https://github.com/Iron1732004/iron-games/releases/download/anime-race-1.0.3/AnimeRace_IRON.exe",
       "exe": "AnimeRace_IRON.exe",
       "image": "https://raw.githubusercontent.com/Iron1732004/games-hub/main/images/anime_race.png",
       "description": "المشاهدين بينزّلوا شخصياتهم في السباق بالأرقام، وبيقلبوا السباق بالهدايا.",
@@ -67,6 +67,12 @@
           "labelEn": "Fast run",
           "send": {
             "effect": "fast"
+          },
+          "duration": {
+            "unit": "s",
+            "default": 6,
+            "min": 1,
+            "max": 60
           }
         },
         {
@@ -75,6 +81,12 @@
           "labelEn": "Super speed",
           "send": {
             "effect": "super"
+          },
+          "duration": {
+            "unit": "s",
+            "default": 6,
+            "min": 1,
+            "max": 60
           }
         },
         {
@@ -83,6 +95,12 @@
           "labelEn": "Storm",
           "send": {
             "effect": "storm"
+          },
+          "duration": {
+            "unit": "s",
+            "default": 3,
+            "min": 1,
+            "max": 30
           }
         },
         {
@@ -99,6 +117,12 @@
           "labelEn": "Phoenix",
           "send": {
             "effect": "phoenix"
+          },
+          "duration": {
+            "unit": "s",
+            "default": 4.5,
+            "min": 1,
+            "max": 60
           }
         },
         {
@@ -107,6 +131,12 @@
           "labelEn": "Dragon",
           "send": {
             "effect": "dragon"
+          },
+          "duration": {
+            "unit": "laps",
+            "default": 1,
+            "min": 1,
+            "max": 10
           }
         }
       ],
