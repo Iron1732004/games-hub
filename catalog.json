@@ -204,22 +204,6 @@
           "command": "dragon"
         }
       ]
-    },
-    {
-      "id": "tuktuk_corniche",
-      "name": "توك توك الكورنيش",
-      "nameEn": "Tuk Tuk Corniche",
-      "version": "1.0.0",
-      "download": "https://github.com/Iron1732004/iron-games/releases/download/tuktuk-corniche-1.0.0/TukTukCorniche.exe",
-      "exe": "TukTukCorniche.exe",
-      "image": "https://github.com/Iron1732004/iron-games/releases/download/tuktuk-corniche-1.0.0/tuktuk_corniche.png",
-      "description": "سوق التوك توك على كورنيش إسكندرية، والمشاهدين بيساعدوك أو بيخربوا عليك بالهدايا. الأوامر بتتظبط من جوه اللعبة (Ctrl+I) بزراير TikFinity.",
-      "descriptionEn": "Drive a tuk-tuk on the Alexandria Corniche while viewers help or sabotage you with gifts. Commands are set inside the game (Ctrl+I) as TikFinity keystrokes.",
-      "protocol": "udp",
-      "port": 9081,
-      "commands": [],
-      "mappings": [],
-      "gifts": []
     }
   ]
 }
